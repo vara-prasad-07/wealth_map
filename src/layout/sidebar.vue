@@ -168,7 +168,7 @@ padding: 10px 15px;
 text-decoration: none;
 margin-bottom: 10px;
 border-radius: 5px;
-transition: background-color 0.3s ease;
+
 cursor: pointer;
 font-size:12px;
 }

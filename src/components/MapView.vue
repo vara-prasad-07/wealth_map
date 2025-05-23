@@ -7,6 +7,7 @@ import sidebar from '../layout/sidebar.vue'
 import axios from "axios"
 import 'leaflet.markercluster'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+import Chart from 'chart.js/auto'
 
 
 
@@ -1456,6 +1457,68 @@ const fetchPropertyData = async (lat, lng) => {
     document.getElementById("searchresults").textContent = "Failed to fetch property data."
   }
 }
+const calculateHistoricalValues = (currentValue) => {
+  // If it's a string, clean it; if it's a number, use as is
+  let baseValue = 0;
+  if (typeof currentValue === 'string') {
+    baseValue = parseFloat(currentValue.replace(/[^0-9.]/g, ''));
+  } else if (typeof currentValue === 'number') {
+    baseValue = currentValue;
+  } else {
+    return { years: [], values: [] };
+  }
+
+  const years = [];
+  const values = [];
+
+  for (let i = 4; i >= 0; i--) {
+    const year = new Date().getFullYear() - i;
+    years.push(year.toString());
+    values.push(Math.round(baseValue * Math.pow(0.9, i)));
+  }
+
+  return { years, values };
+}
+
+const initializeChart = (assessedValue) => {
+  if (!assessedValue) return
+  
+  const chartElement = document.getElementById('assessedValueChart')
+  if (!chartElement) return
+  
+  const { years, values } = calculateHistoricalValues(assessedValue)
+  
+  new Chart(chartElement, {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [{
+        label: 'Assessed Value Trend',
+        data: values,
+        borderColor: '#1A73E8',
+        backgroundColor: 'rgba(26, 115, 232, 0.1)',
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: {
+          beginAtZero: false,
+          ticks: {
+            callback: value => `$${value.toLocaleString()}`
+          }
+        }
+      }
+    }
+  })
+}
+
 
 const showPropertyDetail = (property) => {
   // Extract property details
@@ -1544,16 +1607,7 @@ const showPropertyDetail = (property) => {
                 <span class="value" style="color:black;">${marketValue}</span>
               </div>
             </div>
-            <div class="detail-item">
-              <i class="pi pi-chart-bar"></i>
-              <div>
-                <span class="label">Assessed Value</span>
-                <span class="value" style="color:black;">${assessedValue}</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="detail-row">
+            
             <div class="detail-item">
               <i class="pi pi-dollar"></i>
               <div>
@@ -1561,7 +1615,20 @@ const showPropertyDetail = (property) => {
                 <span class="value" style="color:black;">${taxAmount}</span>
               </div>
             </div>
+          
           </div>
+
+          <div>
+              <i class="pi pi-chart-bar"></i>
+              <div>
+                <span class="label">Assessed Value</span>
+                
+                <div class="chart-container" style="margin-top: 10px; height: 200px;">
+                  <canvas id="assessedValueChart"></canvas>
+                </div>
+              </div>
+              </div>
+          
         </div>
         
         <div class="detail-actions">
@@ -1587,6 +1654,7 @@ const showPropertyDetail = (property) => {
       nextTick(() => {
       // Wait for the element to be created
       document.getElementById('mobile-detail-content').innerHTML = detailHTML
+      initializeChart(property.assessment?.assessed?.assdttlvalue)
     })
     
   } else {
@@ -1596,6 +1664,9 @@ const showPropertyDetail = (property) => {
     const desktopcontainer = document.getElementById('searchresults_desktop')
     maincontainer.innerHTML = detailHTML
     desktopcontainer.innerHTML = detailHTML
+    nextTick(() => {
+    initializeChart(property.assessment?.assessed?.assdttlvalue)
+  })
   }
 }
 // Add close function

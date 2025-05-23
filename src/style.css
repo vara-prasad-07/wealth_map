@@ -98,12 +98,15 @@ button:focus-visible {
   margin: 0 0 4px 0;
   font-size: 16px;
   color: #202124;
+  font-weight:bold;
+  font-family: 'Roboto', sans-serif;
 }
 
 .property-card p {
   margin: 0 0 8px 0;
-  color: #5f6368;
+  color:black;
   font-size: 14px;
+  font-weight:bold;
 }
 
 .property-tag {
@@ -124,7 +127,7 @@ button:focus-visible {
 }
 
 .label {
-  color: #5f6368;
+  color: black;
   margin-right: 4px;
 }
 
