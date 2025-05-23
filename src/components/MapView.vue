@@ -19,6 +19,21 @@ const name = ref('') // Reactive variable for address input
 let autocomplete = null // For Google Places Autocomplete
 let addressCard = ref(false) // To control address suggestions visibility
 const showMobileDetail = ref(false)
+let propertyMarkers = [] // Store references to clear old markers
+const googlePinSvg = (color = "#4285F4") => `
+  <svg width="32" height="48" viewBox="0 0 32 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g filter="url(#shadow)">
+      <path d="M16 47C16 47 30 29.5 30 19C30 9.61116 23.2843 2 16 2C8.71573 2 2 9.61116 2 19C2 29.5 16 47 16 47Z" fill="${color}" stroke="#fff" stroke-width="2"/>
+      <circle cx="16" cy="19" r="6" fill="#fff"/>
+      <circle cx="16" cy="19" r="4" fill="${color}"/>
+    </g>
+    <defs>
+      <filter id="shadow" x="0" y="0" width="32" height="48" filterUnits="userSpaceOnUse">
+        <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.2"/>
+      </filter>
+    </defs>
+  </svg>
+`;
 
 // Watch for changes in the search input to show/hide address card
 watch(name, (newValue) => {
@@ -1451,6 +1466,8 @@ const fetchPropertyData = async (lat, lng) => {
     // Save response for back button functionality
     window.lastResponse = response.data
     displayPropertyList(response.data)
+    console.log(response.data.property)
+    showAttomPropertiesOnMap(response.data.property);
   } catch (error) {
     console.error("Error fetching data from Attom API:", error)
     document.getElementById('loadingelemnet').style.display = "none"
@@ -1669,6 +1686,66 @@ const showPropertyDetail = (property) => {
   })
   }
 }
+
+  function showAttomPropertiesOnMap(properties) {
+  // Remove old markers
+  propertyMarkers.forEach(marker => map.removeLayer(marker));
+  propertyMarkers = [];
+
+  properties.forEach(property => {
+    // Use location.latitude/longitude (may be string, so parseFloat)
+    const lat = parseFloat(property.location?.latitude);
+    const lng = parseFloat(property.location?.longitude);
+    if (!lat || !lng) return;
+
+    // Color by property type
+    let color = "#607D8B";
+    const type = (property.summary?.propertyType || property.summary?.propclass || '').toUpperCase();
+    if (type.includes("SINGLE FAMILY")) color = "#4CAF50";
+    else if (type.includes("COMMERCIAL")) color = "#2196F3";
+    else if (type.includes("CONDOMINIUM")) color = "#9C27B0";
+    else if (type.includes("ROW HOUSE")) color = "#FF9800";
+    else if (type.includes("PARKING")) color = "#FFC107";
+    else if (type.includes("GOVERNMENT")) color = "#F44336";
+
+    // Custom marker icon
+    const icon = L.divIcon({
+  className: 'google-pin-marker',
+  html: googlePinSvg(color),
+  iconSize: [32, 48],
+  iconAnchor: [16, 47], // bottom center
+  popupAnchor: [0, -48]
+});
+
+    // Popup content
+    const address = property.address?.oneLine || property.address?.line1 || 'N/A';
+    const value = property.assessment?.market?.mktttlvalue
+      ? `$${property.assessment.market.mktttlvalue.toLocaleString()}`
+      : (property.assessment?.assessed?.assdttlvalue
+        ? `$${property.assessment.assessed.assdttlvalue.toLocaleString()}`
+        : 'N/A');
+
+    const popupHtml = `
+      <div style="min-width:180px;">
+        <strong>${address}</strong><br>
+        <span style="color:#1A73E8;">Value: ${value}</span>
+        <button onclick="showsmarker()" style="display:block;">View Details</button>
+      </div>
+    `;
+
+    // Create marker
+    const marker = L.marker([lat, lng], { icon });
+    marker.bindPopup(popupHtml);
+
+    // Optional: On marker click, show property detail (if you want)
+    
+    function showsmarker(){
+      showPropertyDetail(property);
+    }
+    marker.addTo(map);
+    propertyMarkers.push(marker);
+  });
+}
 // Add close function
 const closeMobileDetail = () => {
   showMobileDetail.value = false
@@ -1728,7 +1805,8 @@ const displayPropertyList = (response) => {
   // Set content to both containers
   mobileContainer.innerHTML = content;
   desktopContainer.innerHTML = content;
-  
+
+
   // Add click events to both containers
   document.querySelectorAll('.property-card').forEach(card => {
     card.addEventListener('click', () => {
