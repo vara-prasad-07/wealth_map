@@ -2433,6 +2433,7 @@ option{
   .map-container {
     z-index: 1;
     padding-top: 116px;
+    position:fixed;
     
   }
 }
