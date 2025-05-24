@@ -318,7 +318,7 @@ const clearSearch = () => {
 .owners-container {
   max-width: 100%;
   margin: 0 auto;
-  padding: 20px;
+  
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   overflow-x: hidden; /* Add this line */
   width: 100%; /* Add this line */
@@ -530,8 +530,9 @@ const clearSearch = () => {
 
 @media (max-width: 768px) {
   .search-wrapper {
-    width: 100%;
+    width: 80%;
     max-width: none;
+    right:10%;
   }
   
   .table-container {
@@ -609,9 +610,7 @@ const clearSearch = () => {
 }
 
 @media (max-width: 480px) {
-  .owners-container {
-    padding: 16px 12px;
-  }
+  
   
   .search-input {
     font-size: 14px;
