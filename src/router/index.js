@@ -7,9 +7,7 @@ const routes = [
   { path: '/', component: MapView },
   { path: '/hello', component: HelloWorld },
   {path: '/map', component: MapView },
-  {
-    path:'/owners',component:Owners
-  }
+  {path:'/owners',component: Owners}
 ]
 
 const router = createRouter({
