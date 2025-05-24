@@ -514,8 +514,17 @@ const clearSearch = () => {
 /* Responsive Design */
 @media (max-width: 768px) {
   .search-wrapper {
-    width: 100%;
+    width: 70%;
+    
+    right:20%;
   }
+
+  .search-input {
+  
+  
+  min-width: 120px;
+    
+}
   
   .table-header,
   .owner-content {
