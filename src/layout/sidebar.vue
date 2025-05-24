@@ -14,7 +14,7 @@
    <i class="pi pi-globe" style="font-size: 1.5rem"></i>
    Map
 </a>
-    <a>
+    <a href="https://wealthmap.netlify.app/owners">
     <i class="pi pi-user" style="font-size: 1.5rem"></i>
         Owner</a>
         <a>
@@ -32,13 +32,13 @@
 
 
  <div class="bottom">
-    <div href="https://wealthmap.netlify.app/">
+    <div>
          <i class="pi pi-globe" style="font-size: 1.2rem"></i>
-          <a>Map</a>
+          <a href="https://wealthmap.netlify.app/">Map</a>
     </div>
      <div>
           <i class="pi pi-user" style="font-size: 1.2rem"></i>
-        <a>Owner</a>
+        <a href="https://wealthmap.netlify.app/owners">Owner</a>
     </div>
      <div>
          <i class="pi pi-bookmark" style="font-size: 1.2rem"></i>
