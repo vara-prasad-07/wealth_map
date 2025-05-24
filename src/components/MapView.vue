@@ -165,9 +165,7 @@ const reverseGeocode = (lat, lng) => {
   })
 }
   // Hide address card on map double-click
-  map.on('dblclick', function () {
-    document.getElementById('adresscard1').style.display = 'none'
-  })
+ 
 
   // Initialize Google Maps Places Autocomplete
   initGooglePlacesAutocomplete()
@@ -1347,56 +1345,50 @@ const loadPropertiesData = () => {
 
 // Function to initialize Google Maps Places Autocomplete
 const initGooglePlacesAutocomplete = () => {
-  const input = document.getElementById('search_address')
-  
-  // Create autocomplete instance
-  autocomplete = new google.maps.places.Autocomplete(input, {
-    types: ['address'],
-    componentRestrictions: { country: 'us' } // Restrict to US addresses
-  })
-  
-  // Add listener for place selection
-  autocomplete.addListener('place_changed', () => {
-    const place = autocomplete.getPlace()
-    
-    if (!place.geometry) {
-      console.log("No details available for this place")
-      return
-    }
-    
-    // Get the selected place's coordinates
-    const lat = place.geometry.location.lat()
-    const lng = place.geometry.location.lng()
-    
-    // Update the map view
-    map.setView([lat, lng], 19, { animate: true, duration: 1.5 })
-    
-    // Add or move marker
-    if (marker) {
-      marker.setLatLng([lat, lng])
-    } else {
-      marker = L.marker([lat, lng], {
-        icon: L.divIcon({
-          className: 'custom-selected-marker',
-          html: '<div style="background-color: #FF5733; width: 15px; height: 15px; border-radius: 50%; border: 2px solid white;"></div>',
-          iconSize: [20, 20],
-          iconAnchor: [10, 10]
-        })
-      }).addTo(map)
-    }
-    
-    // Hide address card and show loading element
-    document.getElementById('adresscard1').style.display = "none"
-    document.getElementById('loadingelemnet').style.display = "block"
-    document.getElementById("searchresults").textContent = ""
-    
-    // Fetch property data for the selected address
-    fetchPropertyData(lat, lng)
-    
-    // Update name ref with the formatted address
-    name.value = place.formatted_address
-  })
-}
+  // Mobile input
+  const mobileInput = document.getElementById('search_address');
+  if (mobileInput) {
+    const mobileAutocomplete = new google.maps.places.Autocomplete(mobileInput, {
+      types: ['address'],
+      componentRestrictions: { country: 'us' }
+    });
+    mobileAutocomplete.addListener('place_changed', () => {
+      const place = mobileAutocomplete.getPlace();
+      if (!place.geometry) return;
+      const lat = place.geometry.location.lat();
+      const lng = place.geometry.location.lng();
+      map.setView([lat, lng], 19, { animate: true, duration: 1.5 });
+      if (marker) marker.setLatLng([lat, lng]);
+      else marker = L.marker([lat, lng]).addTo(map);
+      document.getElementById('loadingelemnet').style.display = "block";
+      document.getElementById("searchresults").textContent = "";
+      fetchPropertyData(lat, lng);
+      name.value = place.formatted_address;
+    });
+  }
+
+  // Desktop input
+  const desktopInput = document.getElementById('search_address_desktop');
+  if (desktopInput) {
+    const desktopAutocomplete = new google.maps.places.Autocomplete(desktopInput, {
+      types: ['address'],
+      componentRestrictions: { country: 'us' }
+    });
+    desktopAutocomplete.addListener('place_changed', () => {
+      const place = desktopAutocomplete.getPlace();
+      if (!place.geometry) return;
+      const lat = place.geometry.location.lat();
+      const lng = place.geometry.location.lng();
+      map.setView([lat, lng], 19, { animate: true, duration: 1.5 });
+      if (marker) marker.setLatLng([lat, lng]);
+      else marker = L.marker([lat, lng]).addTo(map);
+      document.getElementById('loadingelemnet').style.display = "block";
+      document.getElementById("searchresults_desktop").textContent = "";
+      fetchPropertyData(lat, lng);
+      name.value = place.formatted_address;
+    });
+  }
+};
 
 // Function to geocode an address manually when search icon is clicked
 const geocodeAddress = () => {
@@ -1877,7 +1869,7 @@ function disablesearch(){
 const setupInputEvents = () => {
   document.getElementById('search_address').addEventListener('focus', function () {
     // Show the adresscard1 container when the search input is focused
-    document.getElementById('adresscard1').style.display = 'none'
+    
   })
 }
 
