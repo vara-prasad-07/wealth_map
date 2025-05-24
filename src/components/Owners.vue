@@ -316,10 +316,12 @@ const clearSearch = () => {
 </template>
 <style scoped>
 .owners-container {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 20px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden; /* Add this line */
+  width: 100%; /* Add this line */
 }
 
 .search-section {
@@ -330,7 +332,8 @@ const clearSearch = () => {
 
 .search-wrapper {
   position: relative;
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
 }
 
 .search-input {
@@ -387,17 +390,17 @@ const clearSearch = () => {
 }
 
 .table-container {
-  background: white;
+   background: white;
   border-radius: 10px;
-  overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  width:1350px;
-  flex:wrap;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden; /* Change from auto to hidden */
 }
 
 .table-header {
   display: grid;
-  grid-template-columns: 80px 200px 120px 80px 150px 1fr;
+  grid-template-columns: 80px 2fr 1fr 80px 1fr 2fr;
   background: #f9fafb;
   border-bottom: 1px solid #e5e7eb;
   padding: 16px 20px;
@@ -414,8 +417,8 @@ const clearSearch = () => {
 .owners-list {
   max-height: 600px;
   overflow-y: auto;
-
 }
+
 .owners-list::-webkit-scrollbar {
   display: none;
 }
@@ -431,7 +434,7 @@ const clearSearch = () => {
 
 .owner-content {
   display: grid;
-  grid-template-columns: 80px 200px 120px 80px 150px 1fr;
+  grid-template-columns: 80px 2fr 1fr 80px 1fr 2fr;
   padding: 16px 20px;
   align-items: center;
 }
@@ -477,6 +480,7 @@ const clearSearch = () => {
   display: flex;
   gap: 10px;
   justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 .action-btn {
@@ -512,63 +516,124 @@ const clearSearch = () => {
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .actions-cell {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .action-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
 @media (max-width: 768px) {
   .search-wrapper {
-    width: 70%;
-    
-    right:20%;
+    width: 100%;
+    max-width: none;
   }
-
-  .search-input {
   
-  
-  min-width: 120px;
-    
-}
-  
-  .table-header,
-  .owner-content {
-    grid-template-columns: 1fr;
-    gap: 10px;
+  .table-container {
+    border-radius: 8px;
+    box-shadow: none;
+    border: 1px solid #e5e7eb;
+    overflow-x: hidden;
   }
   
   .table-header {
     display: none;
   }
-  .table-container{
-    max-width:400px;
-  }
-  .rank-cell {
-  font-weight: 600;
-  color: #1f2937;
-  font-size: 16px;
-  text-align:left;
-}
+  
   .owner-content {
-    display: block;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    position: relative;
   }
-  .main-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #1f2937;
-  letter-spacing: 1px;
-  margin: 0;
-  text-align:left;
-}
+  
+  .rank-cell {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #f3f4f6;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 14px;
+  }
+  
   .profile-cell {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    width: 100%;
+  }
+  
+  .networth-cell {
+    margin-bottom: 8px;
+    font-size: 18px;
+  }
+  
+  .age-cell, .country-cell {
+    margin-bottom: 4px;
+    display: flex;
+  }
+  
+  .age-cell::before {
+    content: "Age: ";
+    font-weight: 500;
+    margin-right: 4px;
+  }
+  
+  .country-cell::before {
+    content: "Country: ";
+    font-weight: 500;
+    margin-right: 4px;
   }
   
   .actions-cell {
-    justify-content: flex-start;
-    margin-top: 15px;
+    margin-top: 16px;
+    flex-direction: row;
+    width: 100%;
   }
-  .owners-list {
-  max-height: 600px;
-  overflow-y: auto;
-  max-width:600px;
-
+  
+  .action-btn {
+    flex: 1;
+  }
+  
+  .main-title {
+    font-size: 18px;
+  }
 }
+
+@media (max-width: 480px) {
+  .owners-container {
+    padding: 16px 12px;
+  }
+  
+  .search-input {
+    font-size: 14px;
+  }
+  
+  .actions-cell {
+    flex-direction: column;
+  }
+  
+  .profile-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .avatar {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .name {
+    font-size: 16px;
+  }
 }
 </style>
