@@ -249,7 +249,7 @@ const clearSearch = () => {
 }
 </script>
 <template>
-    <sidebar />
+    
      <div class="owners-container">
     <div class="search-section">
       <div class="search-wrapper">
