@@ -21,8 +21,8 @@
     <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>
         Files</a>
     <a>
-    <i class="pi pi-discord" style="font-size: 1.5rem"></i>
-        Connect</a>
+    <i class="pi pi-ellipsis-v" style="font-size: 1.5rem"></i>
+        More</a>
     
 </div>
  <div class="logo-container">
@@ -45,8 +45,8 @@
          <a>Files</a>
     </div>
      <div>
-        <i class="pi pi-discord" style="font-size: 1.2rem"></i>
-         <a>Connect</a>
+        <i class="pi pi-ellipsis-h" style="font-size: 1.2rem"></i>
+         <a>More</a>
     </div>
     
     

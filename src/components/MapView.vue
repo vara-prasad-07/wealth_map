@@ -1670,7 +1670,7 @@ const showPropertyDetail = (property) => {
     
    
     nextTick(() => {
-        const maincontainer = document.getElementById('searchresults')
+    const maincontainer = document.getElementById('searchresults')
     const desktopcontainer = document.getElementById('searchresults_desktop')
     maincontainer.innerHTML = detailHTML
     desktopcontainer.innerHTML = detailHTML

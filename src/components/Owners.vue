@@ -318,9 +318,9 @@ const clearSearch = () => {
 .owners-container {
   max-width: 100%;
   margin: 0 auto;
-  
+  height:100vh; 
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  overflow-x: hidden; /* Add this line */
+  overflow: hidden; /* Add this line */
   width: 100%; /* Add this line */
 }
 
@@ -396,6 +396,7 @@ const clearSearch = () => {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden; /* Change from auto to hidden */
+  
 }
 
 .table-header {
@@ -407,6 +408,7 @@ const clearSearch = () => {
   font-weight: 600;
   color: #6b7280;
   font-size: 14px;
+  margin-left:1.6rem;
 }
 
 .header-cell {

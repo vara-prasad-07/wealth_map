@@ -3,6 +3,7 @@ import HelloWorld from '../components/HelloWorld.vue'
 import Owners from '../components/Owners.vue'
 import MapView from '../components/MapView.vue'
 
+
 const routes = [
   { path: '/', component: MapView },
   { path: '/hello', component: HelloWorld },
