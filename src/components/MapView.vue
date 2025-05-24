@@ -1645,7 +1645,6 @@ const showPropertyDetail = (property) => {
                 </div>
               </div>
               </div>
-          
         </div>
         
         <div class="detail-actions">
@@ -1677,11 +1676,12 @@ const showPropertyDetail = (property) => {
   } else {
     // Desktop view remains the same
     
-    const maincontainer = document.getElementById('searchresults')
+   
+    nextTick(() => {
+        const maincontainer = document.getElementById('searchresults')
     const desktopcontainer = document.getElementById('searchresults_desktop')
     maincontainer.innerHTML = detailHTML
     desktopcontainer.innerHTML = detailHTML
-    nextTick(() => {
     initializeChart(property.assessment?.assessed?.assdttlvalue)
   })
   }
@@ -1729,7 +1729,7 @@ const showPropertyDetail = (property) => {
       <div style="min-width:180px;">
         <strong>${address}</strong><br>
         <span style="color:#1A73E8;">Value: ${value}</span>
-        <button onclick="showsmarker()" style="display:block;">View Details</button>
+        <button onclick="showPropertyDetail(property)" style="display:block;">View Details</button>
       </div>
     `;
 
@@ -1738,14 +1738,16 @@ const showPropertyDetail = (property) => {
     marker.bindPopup(popupHtml);
 
     // Optional: On marker click, show property detail (if you want)
-    
-    function showsmarker(){
+    marker.on('click', () => {
       showPropertyDetail(property);
-    }
+    });
+    
     marker.addTo(map);
     propertyMarkers.push(marker);
   });
 }
+
+
 // Add close function
 const closeMobileDetail = () => {
   showMobileDetail.value = false
@@ -1941,9 +1943,7 @@ onMounted(() => {
         <option value="500000+">$500k+</option>
       </select>
     
-    <button class="save_search_btn">
-      <i class="pi pi-save"></i> Save
-    </button>
+    
   </div>
   
   <!-- Separate results panel for mobile -->
@@ -1983,9 +1983,7 @@ onMounted(() => {
         <option value="250000-500000">$250k - $500k</option>
         <option value="500000+">$500k+</option>
       </select>
-      <button class="save_search_btn">
-        <i class="pi pi-save"></i> Save
-      </button>
+      
     </div>
     
     <div class="results-panel">
