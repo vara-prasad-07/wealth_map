@@ -27,7 +27,7 @@ const toggleMoreOptions = () => {
     <a @click="router.push('/owners')">
     <i class="pi pi-user" style="font-size: 1.5rem"></i>
         Owner</a>
-        <a>
+        <a  @click="router.push('/bookmarks')">
     <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>
         Files</a>
     <a  @click="toggleMoreOptions">
@@ -55,7 +55,7 @@ const toggleMoreOptions = () => {
           <i class="pi pi-user" style="font-size: 1.2rem"></i>
         <a>Owner</a>
     </div>
-     <div>
+     <div @click="router.push('/bookmarks')">
          <i class="pi pi-bookmark" style="font-size: 1.2rem"></i>
          <a>Files</a>
     </div>
