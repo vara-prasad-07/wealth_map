@@ -1,10 +1,13 @@
 <script setup>
 import sidebar from '../layout/sidebar.vue'
 import { ref, onMounted, computed } from 'vue'
+import { db } from '../firebase' // <-- import your Firestore instance
+import { doc, updateDoc, arrayUnion } from "firebase/firestore"
 
 const searchTerm = ref('')
 const showModal = ref(false)
 const selectedOwner = ref(null)
+const companyId = "9mtW21795c48r09s6nN9"; // TODO: set this dynamically as needed
 
 const owners = ref([
   {
@@ -761,10 +764,35 @@ const filteredOwners = computed(() => {
     owner.country.toLowerCase().includes(term)
   )
 })
-const bookmarkAction=()=>{
-  let bkbtn=document.getElementById("bookmarkbtn")
-  bkbtn.classList.toggle("pi-bookmark-fill")
-}
+const bookmarkAction = async () => {
+  if (!selectedOwner.value) return;
+
+  // Minimal owner details
+  const bookmarkData = {
+    name: selectedOwner.value.name,
+    netWorth: selectedOwner.value.netWorth,
+    propertiesCount: selectedOwner.value.properties.length,
+    ownerId: selectedOwner.value.id
+  };
+
+  try {
+    // Reference to the company document (corrected collection name)
+    const companyRef = doc(db, "companies", companyId);
+
+    // Add to bookmarks array (creates array if not present)
+    await updateDoc(companyRef, {
+      bookmarks: arrayUnion(bookmarkData)
+    });
+
+    // Optional: UI feedback (toggle icon, toast, etc.)
+    let bkbtn = document.getElementById("bookmarkbtn");
+    bkbtn.classList.toggle("pi-bookmark-fill");
+    alert("Bookmarked!");
+  } catch (error) {
+    console.error("Error adding bookmark: ", error);
+    alert("Failed to bookmark owner.");
+  }
+};
 const clearSearch = () => {
   searchTerm.value = ''
 }

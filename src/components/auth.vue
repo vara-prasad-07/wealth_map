@@ -320,7 +320,6 @@ const handleSignUp = () => {
 
 <style scoped>
 
-
 .container {
   min-height: 100vh;
   display: flex;
@@ -544,6 +543,12 @@ const handleSignUp = () => {
 
 /* Extra Small devices (phones, 576px and down) */
 @media (max-width: 575px) {
+  :global(body) {
+  overflow: hidden;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+}
   .container {
     padding: 0.5rem;
     min-height: 100vh;
@@ -633,6 +638,12 @@ const handleSignUp = () => {
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) and (max-width: 767px) {
+  :global(body) {
+  overflow: hidden;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+}
   .container {
     padding: 1rem;
      overflow:hidden;

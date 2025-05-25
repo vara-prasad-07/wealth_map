@@ -1,5 +1,15 @@
 <script setup>
+   import { useRouter } from 'vue-router';
+   import more from '../components/more.vue'
+   
+   import { ref } from 'vue';
+   const router=useRouter()
+   const showMoreOptions = ref(false); // State to toggle the visibility of the pop-up container
 
+const toggleMoreOptions = () => {
+  showMoreOptions.value = !showMoreOptions.value; // Toggle the visibility
+};
+   
 </script>
 
 <template>
@@ -10,47 +20,53 @@
    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTILstzE4n4jxRaa2LcTb5Uf_JKLVtXIZjL3w&s" alt="logo" class="logo" style=" margin-bottom: 2rem;" />
     </div>
       
-  <a href="https://wealthmap.netlify.app/">
+  <a @click="router.push('/map')">
    <i class="pi pi-globe" style="font-size: 1.5rem"></i>
    Map
 </a>
-    <a href="https://wealthmap.netlify.app/owners">
+    <a @click="router.push('/owners')">
     <i class="pi pi-user" style="font-size: 1.5rem"></i>
         Owner</a>
         <a>
     <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>
         Files</a>
-    <a>
+    <a  @click="toggleMoreOptions">
     <i class="pi pi-ellipsis-v" style="font-size: 1.5rem"></i>
         More</a>
     
 </div>
+ 
  <div class="logo-container">
     <img src="https://openclipart.org/image/2000px/247319" alt="logo" class="logo" />
    </div>
  </div>
-
-
- <div class="bottom">
-    <div>
-         <i class="pi pi-globe" style="font-size: 1.2rem"></i>
-          <a href="https://wealthmap.netlify.app/">Map</a>
+ 
+<div v-if="showMoreOptions" class="more-options">
+      <button class="action-button">Invite Employees +</button>
+      <button class="action-button">Refer Friend +</button>
+      <button class="action-button">Know More</button>
     </div>
-     <div>
+ <div class="bottom">
+    <div @click="router.push('/map')">
+         <i class="pi pi-globe" style="font-size: 1.2rem"></i>
+          <a>Map</a>
+    </div>
+     <div @click="router.push('/owners')">
           <i class="pi pi-user" style="font-size: 1.2rem"></i>
-        <a href="https://wealthmap.netlify.app/owners">Owner</a>
+        <a>Owner</a>
     </div>
      <div>
          <i class="pi pi-bookmark" style="font-size: 1.2rem"></i>
          <a>Files</a>
     </div>
-     <div>
+     <div >
         <i class="pi pi-ellipsis-h" style="font-size: 1.2rem"></i>
          <a>More</a>
     </div>
     
     
  </div>
+  
 </template>
 
 <style>
@@ -85,7 +101,7 @@
 }
 .bottom{
     position: absolute;
-    z-index: 1000;
+    z-index: 999;
 }
 .bottom div{
     display: flex;
@@ -183,5 +199,54 @@ font-size:12px;
 .top{
     display: none;
 }
+.more-options{
+    display:none;
+}
+}
+.more-options {
+  position: absolute;
+  top: 50%;
+  left: 80px; /* Adjust to position beside the "More" icon */
+  transform: translateY(-50%);
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 1rem;
+  z-index: 9999; /* Set a high z-index to ensure visibility */
+  animation: slide-in 0.3s ease-out;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.action-button {
+  background-color: #e0e0e0;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.action-button:hover {
+  background-color: #d6d6d6;
+  transform: scale(1.05);
+}
+
+.action-button:active {
+  background-color: #c0c0c0;
+  transform: scale(0.95);
+}
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>
