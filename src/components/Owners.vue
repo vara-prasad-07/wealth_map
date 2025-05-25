@@ -761,7 +761,10 @@ const filteredOwners = computed(() => {
     owner.country.toLowerCase().includes(term)
   )
 })
-
+const bookmarkAction=()=>{
+  let bkbtn=document.getElementById("bookmarkbtn")
+  bkbtn.classList.toggle("pi-bookmark-fill")
+}
 const clearSearch = () => {
   searchTerm.value = ''
 }
@@ -797,6 +800,7 @@ const generateChartPath = (data) => {
 </script>
 
 <template>
+  <sidebar/>
   <div class="owners-container">
     <div class="search-section">
       <div class="search-wrapper">
@@ -863,8 +867,10 @@ const generateChartPath = (data) => {
     <div v-if="showModal" class="modal-overlay" @click="closeModal">
       <div class="modal-container" @click.stop>
         <div class="modal-header">
-          <h2>Owner Details</h2>
+          
           <button @click="closeModal" class="close-btn">×</button>
+          <h2>Owner Details</h2>
+          <button @click="bookmarkAction" id="bookmarkbtn"><i class="pi pi-bookmark" style="font-size: 1.4rem; color:white;"></i></button>
         </div>
         
         <div class="modal-content" v-if="selectedOwner">
@@ -1347,7 +1353,7 @@ const generateChartPath = (data) => {
 
 .modal-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   padding: 24px 32px;
   border-bottom: 1px solid #e2e8f0;
@@ -1359,6 +1365,7 @@ const generateChartPath = (data) => {
   font-weight: 600;
   color: #1f2937;
   margin: 0;
+  margin:0px 30px 0px 30px;
 }
 
 .close-btn {

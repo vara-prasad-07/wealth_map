@@ -1902,7 +1902,7 @@ onMounted(() => {
 </script>
 
 <template>
-  
+  <sidebar/>
   <div class="map-container">
     <div id="map"></div>
   </div>

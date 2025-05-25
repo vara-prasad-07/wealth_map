@@ -1,12 +1,12 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
-import sidebar from './layout/sidebar.vue'
+
 
 </script>
 
 <template>
  
-  <sidebar />
+  
   <router-view/>
 
 </template>
