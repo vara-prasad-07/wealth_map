@@ -6,7 +6,7 @@ import AdminSignup from '../components/AdminSignup.vue'
 import auth from '../components/auth.vue'
 
 const routes = [
-  { path: '/', component: MapView },
+  { path: '/', component: auth },
   { path: '/hello', component: HelloWorld },
   {path: '/map', component: MapView },
   {path:'/owners',component: Owners},{

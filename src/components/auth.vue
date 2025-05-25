@@ -1,10 +1,19 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router';
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { auth, db } from '../firebase'
 
-
+const router = useRouter()
 const isAdmin = ref(true) // true for admin, false for employee
 const isCreateAccount = ref(false) // true for create account, false for sign in
-
+const admincreateemail=ref('')
+const admincreatepass=ref('')
+const companyName=ref('')
+const loginemail=ref('')
+const loginpass=ref('')
 // Form data
 const signInForm = ref({
   email: '',
@@ -39,21 +48,53 @@ const handleFileUpload = (event) => {
   employeeCreateForm.value.companyLogo = event.target.files[0]
 }
 
-const handleSignIn = () => {
+const handleSignIn = async () => {
   console.log('Sign in attempt:', {
     role: isAdmin.value ? 'admin' : 'employee',
     form: signInForm.value
   })
-  // Add your sign-in logic here
+  if (isAdmin){
+    try{
+      const signincred=await signInWithEmailAndPassword(auth, loginemail.value, loginpass.value);
+      router.push('\map')
+      console.log("login success")
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+  
 }
+const registerAdmin = async () => {
+  try {
+  const cred = await createUserWithEmailAndPassword(auth, admincreateemail.value, admincreatepass.value);
+  router.push('/map')
+  const companyRef = await addDoc(collection(db, 'companies'), {
+    name: companyName.value,
+    createdBy: cred.user.uid,
+    visibility: 'private',
+    createdAt: serverTimestamp()
+  });
 
+  await setDoc(doc(db, 'users', cred.user.uid), {
+    uid: cred.user.uid,
+    email: admincreateemail.value,
+    role: 'admin',
+    companyId: companyRef.id,
+    joinedAt: serverTimestamp()
+  });
+
+  console.log("Company and user created:", companyRef.id);
+} catch (err) {
+  console.error("Firestore Error:", err.message);
+}
+}
 const handleSignUp = () => {
   const formData = isAdmin.value ? adminCreateForm.value : employeeCreateForm.value
-  console.log('Sign up attempt:', {
-    role: isAdmin.value ? 'admin' : 'employee',
-    form: formData
-  })
-  // Add your sign-up logic here
+  if(formData){
+    registerAdmin()
+  }
+  
 }
 </script>
 
@@ -98,7 +139,7 @@ const handleSignUp = () => {
             </label>
             <input
               type="email"
-              v-model="signInForm.email"
+              v-model="loginemail"
               class="form-input"
               placeholder="Enter your email"
             />
@@ -110,7 +151,7 @@ const handleSignUp = () => {
             </label>
             <input
               type="password"
-              v-model="signInForm.password"
+              v-model="loginpass"
               class="form-input"
               placeholder="Enter your password"
             />
@@ -203,7 +244,7 @@ const handleSignUp = () => {
             </label>
             <input
               type="text"
-              v-model="employeeCreateForm.name"
+              v-model="companyName"
               class="form-input"
               placeholder="Enter your name"
             />
@@ -227,7 +268,7 @@ const handleSignUp = () => {
             </label>
             <input
               type="email"
-              v-model="employeeCreateForm.email"
+              v-model="admincreateemail"
               class="form-input"
               placeholder="Enter your email"
             />
@@ -239,7 +280,7 @@ const handleSignUp = () => {
             </label>
             <input
               type="password"
-              v-model="employeeCreateForm.password"
+              v-model="admincreatepass"
               class="form-input"
               placeholder="Create a password"
             />
