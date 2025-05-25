@@ -281,17 +281,17 @@ const handleSignUp = () => {
 
 .container {
   min-height: 100vh;
-  background-color: #f9fafb;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1rem;
+  overflow:hidden;
 }
 
 .form-card {
   background-color: white;
   border-radius: 1rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  
   width: 100%;
   max-width: 28rem;
   padding: 2rem;
@@ -496,6 +496,339 @@ const handleSignUp = () => {
   
   .form-title {
     font-size: 1.5rem;
+  }
+}
+/* Mobile First Responsive Design */
+
+/* Extra Small devices (phones, 576px and down) */
+@media (max-width: 575px) {
+  .container {
+    padding: 0.5rem;
+    min-height: 100vh;
+    align-items: flex-start;
+    padding-top: 2rem;
+     overflow-y:hidden;
+  }
+
+  .form-card {
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+  
+    max-width: 100%;
+  }
+
+  .header h1 {
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .role-toggle {
+    margin-bottom: 1.5rem;
+    gap: 0.25rem;
+  }
+
+  .role-button {
+    padding: 0.625rem 1rem;
+    font-size: 0.6875rem;
+    border-radius: 1.5rem;
+  }
+
+  .form-title {
+    font-size: 1.375rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .form-subtitle {
+    font-size: 0.8125rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-label {
+    font-size: 0.8125rem;
+    margin-bottom: 0.375rem;
+  }
+
+  .form-input,
+  .file-input {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.9375rem;
+    border-radius: 0.375rem;
+  }
+
+  .file-input::-webkit-file-upload-button {
+    margin-right: 0.75rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+
+  .submit-button {
+    padding: 0.875rem 1rem;
+    font-size: 0.8125rem;
+    margin-top: 1.5rem;
+  }
+
+  .toggle-form {
+    margin-top: 1.5rem;
+  }
+
+  .toggle-form span,
+  .toggle-form button {
+    font-size: 0.8125rem;
+  }
+
+  .forgot-password button {
+    font-size: 0.8125rem;
+  }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .container {
+    padding: 1rem;
+     overflow:hidden;
+  }
+
+  .form-card {
+    padding: 1.5rem;
+    max-width: 26rem;
+  }
+
+  .form-title {
+    font-size: 1.5rem;
+  }
+
+  .role-button {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.71875rem;
+  }
+
+  .form-input,
+  .file-input {
+    padding: 0.6875rem 0.9375rem;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .container {
+    padding: 1.5rem;
+     overflow:hidden;
+  }
+
+  .form-card {
+    padding: 2.25rem;
+    max-width: 30rem;
+  }
+
+  .form-title {
+    font-size: 2rem;
+  }
+
+  .header h1 {
+    font-size: 0.9375rem;
+  }
+
+  .role-button {
+    padding: 0.625rem 1.75rem;
+    font-size: 0.8125rem;
+  }
+
+  .form-input,
+  .file-input {
+    padding: 0.8125rem 1.125rem;
+    font-size: 1.0625rem;
+  }
+
+  .submit-button {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.9375rem;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .container {
+    padding: 2rem;
+     overflow:hidden;
+  }
+
+  .form-card {
+    padding: 2.5rem;
+    max-width: 32rem;
+  }
+
+  .form-title {
+    font-size: 2.125rem;
+  }
+
+  .header h1 {
+    font-size: 1rem;
+  }
+
+  .role-button {
+    padding: 0.75rem 2rem;
+    font-size: 0.875rem;
+  }
+
+  .form-input,
+  .file-input {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.125rem;
+  }
+
+  .submit-button {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .container {
+    padding: 2.5rem;
+     overflow:hidden;
+  }
+
+  .form-card {
+    padding: 3rem;
+    max-width: 36rem;
+   
+  }
+
+  .header {
+    margin-bottom: 2.5rem;
+  }
+
+  .header h1 {
+    font-size: 1.125rem;
+    letter-spacing: 0.075em;
+  }
+
+  .role-toggle {
+    margin-bottom: 2.5rem;
+    gap: 0.75rem;
+  }
+
+  .role-button {
+    padding: 0.875rem 2.25rem;
+    font-size: 0.9375rem;
+    letter-spacing: 0.075em;
+  }
+
+  .form-title {
+    font-size: 2.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .form-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-label {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .form-input,
+  .file-input {
+    padding: 1rem 1.5rem;
+    font-size: 1.1875rem;
+    border-radius: 0.625rem;
+  }
+
+  .file-input::-webkit-file-upload-button {
+    margin-right: 1.25rem;
+    padding: 0.625rem 1.25rem;
+    font-size: 1rem;
+  }
+
+  .forgot-password {
+    margin-top: 1.25rem;
+  }
+
+  .forgot-password button {
+    font-size: 1rem;
+  }
+
+  .submit-button {
+    padding: 1.125rem 1.75rem;
+    font-size: 1.0625rem;
+    margin-top: 2.5rem;
+    border-radius: 0.625rem;
+    letter-spacing: 0.075em;
+  }
+
+  .toggle-form {
+    margin-top: 2.5rem;
+  }
+
+  .toggle-form span,
+  .toggle-form button {
+    font-size: 1rem;
+  }
+}
+
+/* Landscape orientation adjustments for mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+  .container {
+    align-items: flex-start;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+     overflow:hidden;
+  }
+
+  .form-card {
+    margin: 0 auto;
+  }
+
+  .header {
+    margin-bottom: 1rem;
+  }
+
+  .role-toggle {
+    margin-bottom: 1rem;
+  }
+
+  .form-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-subtitle {
+    margin-bottom: 1rem;
+  }
+
+  .form-section {
+    margin-bottom: 1rem;
+  }
+
+  .form-group {
+    margin-bottom: 0.75rem;
+  }
+
+  .submit-button {
+    margin-top: 1rem;
+  }
+
+  .toggle-form {
+    margin-top: 1rem;
   }
 }
 </style>
