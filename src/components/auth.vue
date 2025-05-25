@@ -60,7 +60,8 @@ const handleSignIn = async () => {
       console.log("login success")
     }
     catch(error){
-      console.log(error)
+      alert("Invalid credentials")
+      return
     }
   }
   
