@@ -3,11 +3,47 @@ import sidebar from '../layout/sidebar.vue'
 import { ref, onMounted, computed } from 'vue'
 import { db } from '../firebase' // <-- import your Firestore instance
 import { doc, updateDoc, arrayUnion } from "firebase/firestore"
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
 
 const searchTerm = ref('')
 const showModal = ref(false)
 const selectedOwner = ref(null)
 const companyId = "9mtW21795c48r09s6nN9"; // TODO: set this dynamically as needed
+
+const bookmarkOwner = async (owner) => {
+  const bookmarkData = {
+    type: 'owner',
+    name: selectedOwner.value.name,
+    netWorth: selectedOwner.value.netWorth,
+    propertiesCount: selectedOwner.value.properties.length,
+    ownerId: selectedOwner.value.id,
+    timestamp: Date.now()
+  }
+  try {
+    const companyRef = doc(db, "companies", companyId)
+    await updateDoc(companyRef, {
+      bookmarks: arrayUnion(bookmarkData)
+    })
+    alert("Owner bookmarked!")
+  } catch (e) {
+    alert("Failed to bookmark owner.")
+  }
+}
+const viewOnMap = (property) => {
+  router.push({
+    name: 'MapView', // Make sure your route is named 'MapView'
+    query: {
+      lat: property.lat,
+      lng: property.lng,
+      address: property.address,
+      type: property.type,
+      value: property.value,
+      description: property.description
+    }
+  })
+}
 
 const owners = ref([
   {
@@ -898,7 +934,7 @@ const generateChartPath = (data) => {
           
           <button @click="closeModal" class="close-btn">×</button>
           <h2>Owner Details</h2>
-          <button @click="bookmarkAction" id="bookmarkbtn"><i class="pi pi-bookmark" style="font-size: 1.4rem; color:white;"></i></button>
+          <button @click="bookmarkOwner()" id="bookmarkbtn"><i class="pi pi-bookmark" style="font-size: 1.4rem; color:white;"></i></button>
         </div>
         
         <div class="modal-content" v-if="selectedOwner">
@@ -1009,7 +1045,7 @@ const generateChartPath = (data) => {
                   </div>
                 </div>
                 <div class="property-actions">
-                  <button class="view-map-btn">View On Map</button>
+                  <button class="view-map-btn" @click="viewOnMap(property)">View On Map</button>
                 </div>
               </div>
             </div>

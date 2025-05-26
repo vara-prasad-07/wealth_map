@@ -9,7 +9,7 @@ import bookmarks from '../components/bookmarks.vue'
 const routes = [
   { path: '/', component: auth },
   { path: '/hello', component: HelloWorld },
-  {path: '/map', component: MapView },
+  {path: '/map',name: 'MapView', component: MapView },
   {path:'/owners',component: Owners},{
     path:'/adminsignup',component:AdminSignup
   },

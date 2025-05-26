@@ -8,9 +8,13 @@ import axios from "axios"
 import 'leaflet.markercluster'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import Chart from 'chart.js/auto'
+import { db } from '../firebase'
+import { doc, updateDoc, arrayUnion }  from "firebase/firestore"
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 
-
+const companyId = "9mtW21795c48r09s6nN9"; // Use your actual company id
 let map = null
 let marker = null // Reference for the marker
 let markerClusterGroup = null // Reference for the cluster group
@@ -1642,7 +1646,7 @@ const showPropertyDetail = (property) => {
         <div class="detail-actions">
           <button class="action-button">
             <i class="pi pi-bookmark"></i>
-            <span>Save</span>
+            <span class="save-bookmark-btn">Save</span>
           </button>
           <button class="action-button">
             <i class="pi pi-share-alt"></i>
@@ -1663,6 +1667,10 @@ const showPropertyDetail = (property) => {
       // Wait for the element to be created
       document.getElementById('mobile-detail-content').innerHTML = detailHTML
       initializeChart(property.assessment?.assessed?.assdttlvalue)
+       const saveBtn = document.querySelector('.save-bookmark-btn');
+  if (saveBtn) {
+    saveBtn.onclick = () => bookmarkProperty(property);
+  }
     })
     
   } else {
@@ -1675,6 +1683,10 @@ const showPropertyDetail = (property) => {
     maincontainer.innerHTML = detailHTML
     desktopcontainer.innerHTML = detailHTML
     initializeChart(property.assessment?.assessed?.assdttlvalue)
+     const saveBtn = document.querySelector('.save-bookmark-btn');
+  if (saveBtn) {
+    saveBtn.onclick = () => bookmarkProperty(property);
+  }
   })
   }
 }
@@ -1810,7 +1822,25 @@ const displayPropertyList = (response) => {
     });
   });
 }
-
+const bookmarkProperty = async (property) => {
+  const bookmarkData = {
+    type: 'property',
+    address: property.address,
+    value: property.value,
+    lat: property.lat,
+    lng: property.lng,
+    timestamp: Date.now()
+  }
+  try {
+    const companyRef = doc(db, "companies", companyId)
+    await updateDoc(companyRef, {
+      bookmarks: arrayUnion(bookmarkData)
+    })
+    alert("Property bookmarked!")
+  } catch (e) {
+    alert("Failed to bookmark property.")
+  }
+}
 // Function to go back to property list
 window.showPropertyList = () => {
   // Re-display the property list with the last response
@@ -1877,6 +1907,26 @@ const setupInputEvents = () => {
 onMounted(() => {
   nextTick(() => {
     // Check if Google Maps API is loaded
+
+    if (route.query.lat && route.query.lng) {
+    const lat = parseFloat(route.query.lat)
+    const lng = parseFloat(route.query.lng)
+    // Wait for map to be initialized
+    setTimeout(() => {
+      if (map) {
+        map.setView([lat, lng], 17, { animate: true })
+        fetchPropertyData(lat,lng)
+        // Remove previous marker if needed
+        if (marker) map.removeLayer(marker)
+        marker = L.marker([lat, lng]).addTo(map)
+        marker.bindPopup(`
+          <strong>${route.query.address || ''}</strong><br>
+          ${route.query.type || ''} - ${route.query.value || ''}<br>
+          ${route.query.description || ''}
+        `).openPopup()
+      }
+    }, 500)
+  }
     
     if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
       // If not loaded, load it dynamically
@@ -1899,6 +1949,7 @@ onMounted(() => {
     
   })
 })
+
 </script>
 
 <template>

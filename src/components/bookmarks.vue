@@ -1,6 +1,12 @@
 <script setup>
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
 import sidebar from '../layout/sidebar.vue'
+import { db } from '../firebase'
+import { doc, getDoc } from "firebase/firestore"
+
+const companyId = "9mtW21795c48r09s6nN9"; // Use your actual company id
+const bookmarks = ref([])
+
 const activeTab = ref('properties')
 
 const properties = [
@@ -12,56 +18,49 @@ const properties = [
   ,
   { id: 3, name: 'Mountain Retreat', location: 'Colorado', price: '$800,000' }
   ,
-  { id: 3, name: 'Mountain Retreat', location: 'Colorado', price: '$800,000' }
+  { id: 3, name: 'Mountain Retreat', location: 'Colorado', price: '$800,000' },
+  
 ]
 
 const owners = [
   { id: 1, name: 'John Doe', email: 'john@example.com', phone: '555-1234' },
-  { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '555-5678' }
+  { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '555-5678' },
+  
 ]
+onMounted(async () => {
+  const companyRef = doc(db, "companies", companyId)
+  const snap = await getDoc(companyRef)
+  if (snap.exists() && snap.data().bookmarks) {
+    bookmarks.value = snap.data().bookmarks
+  }
+})
 </script>
 
 <template>
     <sidebar/>
   <div class="bookmark-container">
-    <div class="tab-header">
-      <button
-        :class="['tab-btn', { active: activeTab === 'properties' }]"
-        @click="activeTab = 'properties'"
-      >
-        Properties
-      </button>
-      <button
-        :class="['tab-btn', { active: activeTab === 'owners' }]"
-        @click="activeTab = 'owners'"
-      >
-        Owners
-      </button>
-    </div>
-    <div class="tab-content">
-      <div v-if="activeTab === 'properties'" class="card-list">
-        <div v-for="property in properties" :key="property.id" class="card">
-          <h3>{{ property.name }}</h3>
-          <p><strong>Location:</strong> {{ property.location }}</p>
-          <p><strong>Price:</strong> {{ property.price }}</p>
-          <div>
-          <button class="view-btn">View Details</button>
-          <button class="export-btn" >Export Details</button>
-          </div>
-        </div>
-      </div>
-      <div v-else class="card-list">
-        <div v-for="owner in owners" :key="owner.id" class="card">
-          <h3>{{ owner.name }}</h3>
-          <p><strong>Email:</strong> {{ owner.email }}</p>
-          <p><strong>Phone:</strong> {{ owner.phone }}</p>
-          <div>
-          <button class="view-btn">View Details</button>
-          <button class="export-btn">Export Details</button>
-          </div>
-        </div>
+     <div class="tab-header">
+    <button :class="['tab-btn', { active: activeTab === 'properties' }]" @click="activeTab = 'properties'">Properties</button>
+    <button :class="['tab-btn', { active: activeTab === 'owners' }]" @click="activeTab = 'owners'">Owners</button>
+  </div>
+  <div class="tab-content">
+    <div v-if="activeTab === 'properties'" class="card-list">
+      <div v-for="item in bookmarks.filter(b => b.type === 'property')" :key="item.timestamp" class="card">
+        <h3>{{ item.address }}</h3>
+        <p><strong>Value:</strong> {{ item.value }}</p>
+        <p><strong>Lat/Lng:</strong> {{ item.lat }}, {{ item.lng }}</p>
+        <button class="view-btn">View Details</button>
       </div>
     </div>
+    <div v-else class="card-list">
+      <div v-for="item in bookmarks.filter(b => b.type === 'owner')" :key="item.timestamp" class="card">
+        <h3>{{ item.name }}</h3>
+        <p><strong>Net Worth:</strong> {{ item.netWorth }}</p>
+        <p><strong>Properties:</strong> {{ item.propertiesCount }}</p>
+        <button class="view-btn">View Details</button>
+      </div>
+    </div>
+  </div>
   </div>
 </template>
 
