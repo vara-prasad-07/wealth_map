@@ -4,7 +4,8 @@ import { useRouter } from 'vue-router';
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore'
-import { auth, db } from '../firebase'
+import { auth, db,onAuthStateChanged } from '../firebase'
+
 
 const router = useRouter()
 const isAdmin = ref(true) // true for admin, false for employee
@@ -58,6 +59,20 @@ const handleSignIn = async () => {
       const signincred=await signInWithEmailAndPassword(auth, loginemail.value, loginpass.value);
       router.push('\map')
       console.log("login success")
+      onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const basicUser = {
+      uid: user.uid,
+      email: user.email
+    };
+
+    localStorage.setItem("basicUser", JSON.stringify(basicUser));
+
+    // Now use UID to fetch Firestore user data if needed
+  } else {
+    localStorage.removeItem("basicUser");
+  }
+});
     }
     catch(error){
       alert("Invalid credentials")

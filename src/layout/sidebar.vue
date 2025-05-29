@@ -59,7 +59,7 @@ const toggleMoreOptions = () => {
          <i class="pi pi-bookmark" style="font-size: 1.2rem"></i>
          <a>Files</a>
     </div>
-     <div >
+     <div @click="router.push('/more')" >
         <i class="pi pi-ellipsis-h" style="font-size: 1.2rem"></i>
          <a>More</a>
     </div>

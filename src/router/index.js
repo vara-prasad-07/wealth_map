@@ -5,6 +5,7 @@ import MapView from '../components/MapView.vue'
 import AdminSignup from '../components/AdminSignup.vue'
 import auth from '../components/auth.vue'
 import bookmarks from '../components/bookmarks.vue'
+import more from '../components/more.vue'
 
 const routes = [
   { path: '/', component: auth },
@@ -14,7 +15,8 @@ const routes = [
     path:'/adminsignup',component:AdminSignup
   },
   {path:'/auth',component:auth},
-  {path:'/bookmarks',component:bookmarks}
+  {path:'/bookmarks',component:bookmarks},
+  {path:'/more',component:more}
 ]
 
 const router = createRouter({

@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-
+import { onAuthStateChanged } from "firebase/auth";
 const firebaseConfig = {
  apiKey: "AIzaSyBKuRCTzEVwbc2ZFgmwm050uxbRTk5ZONE",
   authDomain: "wealtmap.firebaseapp.com",
@@ -15,4 +15,4 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-export { auth, db };
+export { auth, db, onAuthStateChanged };
