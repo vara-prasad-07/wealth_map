@@ -95,7 +95,7 @@ const initMap = () => {
   
   // ATTOM parcel layer
   const attomLayer = L.tileLayer(
-    'https://api.gateway.attomdata.com/parceltiles/{z}/{x}/{y}.png?apiKey=9ba9eb3e6dd7beaf8c6488b6641d0bfc'
+    'https://api.gateway.attomdata.com/parceltiles/{z}/{x}/{y}.png?apiKey=89f309df343222593a758fb5ec41e39a'
   )
 
   // Add base layers toggle
@@ -1438,7 +1438,7 @@ const geocodeAddress = () => {
 // Function to fetch property data from ATTOM API
 const fetchPropertyData = async (lat, lng) => {
   const API_HOST = "https://api.gateway.attomdata.com"
-  const API_KEY = "9ba9eb3e6dd7beaf8c6488b6641d0bfc"
+  const API_KEY = "89f309df343222593a758fb5ec41e39a"
   const endpoint = `${API_HOST}/propertyapi/v1.0.0/assessment/snapshot`
 
   const params = {
