@@ -3,12 +3,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 const firebaseConfig = {
- apiKey: "AIzaSyBKuRCTzEVwbc2ZFgmwm050uxbRTk5ZONE",
-  authDomain: "wealtmap.firebaseapp.com",
-  projectId: "wealtmap",
-  storageBucket: "wealtmap.firebasestorage.app",
-  messagingSenderId: "1032022494910",
-  appId: "1:1032022494910:web:159458d9bb410a350f58ef"
+ apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId:import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);
